@@ -1,7 +1,7 @@
 # libraries
 library(magrittr)
 
-# load and clean S&P500 old prices
+### load and clean S&P500 old prices
 raw <-
     readr::read_csv(here::here('database', 'raw_data', 'sp_hist_prices.csv'))
 
@@ -50,6 +50,9 @@ bom_px <-
                   dt_start = as.character(dt_start)) %>%
     # filter NA rows
     dplyr::filter(!is.na(dt_end))
+
+
+### read, load and clean CAPE data
 
 
 
