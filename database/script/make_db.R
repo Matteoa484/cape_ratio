@@ -54,7 +54,35 @@ bom_px <-
 
 ### read, load and clean CAPE data
 
+#url <- 'http://www.econ.yale.edu/~shiller/data/ie_data.xls'
 
+#download.file(url, here::here('database', 'raw_data'))
+
+cape_data <-
+    readxl::read_xls(here::here('database', 'raw_data', 'ie_data.xls'),
+                     sheet = 5,
+                     skip = 7,
+                     na = c('', 'NA'),
+                     col_types = c('text', rep('numeric', 4), 'text', rep('numeric', 16))
+    ) %>%
+    janitor::remove_empty(which = 'cols') %>%
+    dplyr::select(c(Date:CPI, Price...8:`TR CAPE`)) %>%
+    `colnames<-`(c('date', 'price', 'dividend', 'earning', 'cpi', 'real_px', 'real_dvd',
+                   'real_px_tr', 'real_earn', 'real_tr_earn', 'cape', 'tr_cape')
+    ) %>%
+    dplyr::mutate(year = as.integer(stringr::str_sub(date, start = 1, end = 4))) %>%
+    dplyr::filter(rowSums(is.na(.)) < 13)
+
+
+# use the recycling of cbind to attach a list of months for each year
+yr_mon <- as.data.frame(cbind(cape_data[['year']], seq(1, 12, 1))) %>%
+    `colnames<-`(c('year', 'month'))
+
+cape_data <-
+    dplyr::bind_cols(cape_data, yr_mon['month']) %>%
+    dplyr::select(year, month, dplyr::everything(), -date)
+
+### load data to data base
 
 # open connection to DB
 con <- DBI::dbConnect(RSQLite::SQLite(), here::here('database', 'cape.db'))    

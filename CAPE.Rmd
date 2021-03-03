@@ -1,0 +1,20 @@
+---
+title: "CAPE ratio"
+author: "Matteo Anro"
+date: "3/3/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Shiller first paper: http://www.econ.yale.edu/~shiller/online/jpmalt.pdf
+
+Shiller second paper: https://www.nber.org/system/files/working_papers/w8221/w8221.pdf
+
+Shiller data: http://www.econ.yale.edu/~shiller/data.htm
+
+advisor perspective on new evolution of cape https://www.advisorperspectives.com/articles/2020/07/20/the-remarkable-accuracy-of-cape-as-a-predictor-of-returns-1
+
+Vanguard analysis http://fairwaywealth.com/wp-content/uploads/Vanguard-Research-11-30-2014.pdf
