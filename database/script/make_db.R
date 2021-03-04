@@ -96,5 +96,8 @@ DBI::dbAppendTable(con, 'sp_eom_price', eom_px)
 # upload beginninbg-of-month prices to 'bom' table
 DBI::dbAppendTable(con, 'sp_bom_price', bom_px)
 
+# upload cape data
+DBI::dbAppendTable(con, 'cape', cape_data)
+
 # close conncetion to DB
 DBI::dbDisconnect(con)
