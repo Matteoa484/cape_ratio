@@ -82,7 +82,9 @@ cape_data <-
     dplyr::bind_cols(cape_data, yr_mon['month']) %>%
     dplyr::select(year, month, dplyr::everything(), -date)
 
-### load data to data base
+
+
+### load data to DB
 
 # open connection to DB
 con <- DBI::dbConnect(RSQLite::SQLite(), here::here('database', 'cape.db'))    
