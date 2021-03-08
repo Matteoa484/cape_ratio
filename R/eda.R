@@ -112,3 +112,27 @@ xts::merge.xts(cape_xts, ann_ret_10y, join = 'inner') %>%
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE) +
     scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+
+
+# load hist P/E
+sp_pe_xts <-
+    readr::read_csv(here::here('database', 'raw_data', 'sp_hist_pe.csv'),
+                col_types = readr::cols(
+                    Date = readr::col_date(format = ""),
+                    PE_RATIO = readr::col_double()
+                )
+    ) %>%
+    `colnames<-`(c('date', 'pe_ratio')) %>%
+    xts::xts(x = .[, -1], order.by = .[[1]])
+
+
+# load hist S&P500 close prices
+dplyr::tbl(con, 'sp_eom_price') %>%
+    dplyr::filter(index == 'SPXT') %>%
+    dplyr::select(date, price) %>%
+    dplyr::mutate(price = as.numeric(price)) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(date = lubridate::ymd(date))
+  
+pe_xts <-
+    xts::merge.xts(sp_pe_xts, )
