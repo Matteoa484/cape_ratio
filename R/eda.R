@@ -127,12 +127,18 @@ sp_pe_xts <-
 
 
 # load hist S&P500 close prices
-dplyr::tbl(con, 'sp_eom_price') %>%
+sp_m_px <- 
+    dplyr::tbl(con, 'sp_eom_price') %>%
     dplyr::filter(index == 'SPXT') %>%
     dplyr::select(date, price) %>%
     dplyr::mutate(price = as.numeric(price)) %>%
     dplyr::collect() %>%
-    dplyr::mutate(date = lubridate::ymd(date))
+    dplyr::mutate(date = lubridate::ymd(date)) %>%
+    xts::xts(x = .[, -1], order.by = .[[1]])
   
 pe_xts <-
-    xts::merge.xts(sp_pe_xts, )
+    xts::merge.xts(sp_pe_xts, sp_m_px)
+
+
+
+
