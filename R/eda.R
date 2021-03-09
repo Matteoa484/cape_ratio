@@ -1,3 +1,7 @@
+library(magrittr)
+library(ggplot2)
+
+
 con <- DBI::dbConnect(RSQLite::SQLite(), here::here('database', 'cape.db'))
 
 DBI::dbListTables(con)
@@ -77,6 +81,18 @@ xts::merge.xts(cape_xts, ann_ret_6m, join = 'inner') %>%
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE)
 
+data_6m <-
+    xts::merge.xts(cape_xts, ann_ret_6m, join = 'inner') %>%
+    na.omit()
+
+
+lm_6m <- lm(X6_m ~ cape, data = data_6m)
+
+summary(lm_6m)
+
+## returns are not-normal
+
+
 
 # annualized return for 1-year
 ((1 + y) ^ (12 / 12)) - 1
@@ -98,6 +114,17 @@ xts::merge.xts(cape_xts, ann_ret_5y, join = 'inner') %>%
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE) +
     scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+
+
+data_5y <-
+    xts::merge.xts(cape_xts, ann_ret_5y, join = 'inner') %>%
+    na.omit()
+
+
+lm_5y <- lm(X5_y ~ cape, data = data_5y)
+
+summary(lm_5y)
+
 
 
 ann_ret_10y <- ((1 + sp_ret$`10_y`) ^ (12 / 120)) - 1
