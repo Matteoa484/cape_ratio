@@ -138,7 +138,19 @@ xts::merge.xts(cape_xts, ann_ret_10y, join = 'inner') %>%
     ggplot(aes(x = cape, y = `10y_ret`)) +
     geom_point() +
     geom_smooth(method = 'lm', se = FALSE) +
+    geom_smooth(color = 'red', se = FALSE) +
     scale_y_continuous(labels = scales::percent_format(accuracy = 1))
+
+
+data_10y <-
+    xts::merge.xts(cape_xts, ann_ret_10y, join = 'inner') %>%
+    na.omit()
+
+
+lm_10y <- lm(X10_y ~ cape, data = data_10y)
+
+summary(lm_10y)
+
 
 
 # load hist P/E
